@@ -9,14 +9,14 @@ const WorkoutSchema = new Schema({
     },
     exercises: [
         {
-            type: Schema.Types.Array,
+            type: Schema.Types.ObjectId,
             ref: "Exercise"
         }
     ]
 });
 
 WorkoutSchema.methods.newWorkout = function() {
-    this.exercises
+    //create a new collection
 }
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
