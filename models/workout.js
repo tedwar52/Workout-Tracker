@@ -9,16 +9,19 @@ const WorkoutSchema = new Schema({
     },
     exercises: [
         {
-            type: Schema.Types.ObjectId,
+            type: Schema.Types.Array,
             ref: "Exercise"
         }
     ]
 });
 
+WorkoutSchema.methods.newWorkout = function() {
+    this.exercises
+}
+
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
 module.exports = Workout;
 
-//HOW DO I DEFINE "DAY:"
-//It's not a string...
-// new Date().setDate(new Date().getDate()-10)
+
+//feel free to make custom methods

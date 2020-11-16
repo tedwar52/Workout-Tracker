@@ -6,7 +6,6 @@ mongoose.connect("mongodb://localhost/workout", {
   useFindAndModify: false
 });
 
-//this is NOT the schema
 const workoutSeed = [
   {
     day: new Date().setDate(new Date().getDate()-10),
