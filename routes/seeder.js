@@ -1,7 +1,7 @@
 //-----------imports---------------------------------
 const mongoose = require("mongoose");
 const db = require("../models");
-const {workoutSeed} = require("./seed");
+const {workoutSeed} = require("../seeders/seed");
 
 //-----------mongoose connection---------------------
 

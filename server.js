@@ -20,9 +20,12 @@ app.use(express.static("public")); /*might change "public"*/
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true});
 
-//--------------ROUTES----------------------------------
+//--------------ROUTES---------------------------------
 
+require("./routes/html")(app);
 //-----html routes-----------
+
+/*
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
@@ -34,46 +37,82 @@ app.get("/exercise", (req, res) => {
 app.get("/stats", (req, res) => {
     res.sendFile(path.join(__dirname, "/public/stats.html"));
 });
+*/
 
 //-----api routes------------
+//require("./routes/api")(app);
 
-//New Workout
-    //create new collection in workout db
-    app.post("/api/workouts", ({body}, res) => {
-        db.Workout.create({ day: Date.now })
-        .then(dbWorkout => {
-            console.log(dbWorkout);
-        })
-        .catch(err => {
-            res.json(err)
-        });
+app.post("/api/workouts", ({body}, res) => {
+    db.Workout.create()
+    .then(dbWorkout => {
+        console.log(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err)
     });
-    //update existing collection in workoutdb (add an exercise)
-    app.put("/api/workouts/:id", ({body}, res) => {
-        db.Workout.create(body)
-        //create exercise based on body object
-        .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
-        //insert into exercise schema
-        .then(dbWorkout => {
-            res.json(dbWorkout);
-        })
-        .catch(err => {
-            res.json(err);
-        })
+});
+//update existing collection in workoutdb (add an exercise)
+app.put("/api/workouts/:id", ({body}, res) => {
+    db.Workout.create(body)
+    //create exercise based on body object
+    .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
+    //insert into exercise schema
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    })
+});
+//populate the db
+app.get("/api/workouts", (req, res) => {
+    db.Workout.find({})
+    .populate("exercises")
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
     });
-    //populate the db
-    app.get("/api/workouts", (req, res) => {
-        db.Workout.find({})
-        .populate("exercises")
-        .then(dbWorkout => {
-            res.json(dbWorkout);
-        })
-        .catch(err => {
-            res.json(err);
-        });
-    });
+});
 
-//Update Old Workout   
+/*
+app.post("/api/exercise", ({body}, res) => {
+    db.Workout.create()
+    .then(dbWorkout => {
+        console.log(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err)
+    });
+});
+//update existing collection in workoutdb (add an exercise)
+app.put("/api/exercise/:id", ({body}, res) => {
+    db.Workout.create(body)
+    //create exercise based on body object
+    .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
+    //insert into exercise schema
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    })
+});
+//populate the db
+app.get("/api/exercise", (req, res) => {
+    db.Workout.find({})
+    .populate("exercises")
+    .then(dbWorkout => {
+        res.json(dbWorkout);
+    })
+    .catch(err => {
+        res.json(err);
+    });
+});
+*/
+
+/* Update Old Workout   
     
     app.route('/exercise')
         .get(function (req, res) {
@@ -97,7 +136,7 @@ app.get("/stats", (req, res) => {
                 res.json(err);
             });
     });
-
+*/
 
 //--------------Listener--------------------------------
 
