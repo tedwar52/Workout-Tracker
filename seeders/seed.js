@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
-const db = require("./models");
+const db = require("../models/models");
 
 mongoose.connect("mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
 
+//this is NOT the schema
 const workoutSeed = [
   {
     day: new Date().setDate(new Date().getDate()-10),
