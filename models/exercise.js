@@ -3,15 +3,14 @@ const Schema = mongoose.Schema;
 
 //SCHEMA -- defines the inputs necessary where people will enter in new exercises
 //type, name, duration, weight, reps, sets
-const exerciseSchema = new Schema(
-    {
-        exercise: [
-            type: String,
-            name: String,
-
-        ]
-    }
-);
+const exerciseSchema = new Schema({
+        type: String,
+        name: String,
+        duration: Number,
+        weight: Number,
+        reps: Number,
+        sets: Number
+});
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);
 

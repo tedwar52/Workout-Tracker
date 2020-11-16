@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const WorkoutSchema = new Schema({
-    day: String,
+    day: {
+        type: Date,
+        default: Date.now
+    },
     exercises: [
         {
             type: Schema.Types.ObjectId,
@@ -15,3 +18,7 @@ const WorkoutSchema = new Schema({
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
 module.exports = Workout;
+
+//HOW DO I DEFINE "DAY:"
+//It's not a string...
+// new Date().setDate(new Date().getDate()-10)
