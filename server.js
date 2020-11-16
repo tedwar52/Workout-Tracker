@@ -39,7 +39,7 @@ app.get("/stats", (req, res) => {
 
 //New Workout
     //create new collection in workout db
-    app.post("/api/exercise", ({body}, res) => {
+    app.post("/api/workouts", ({body}, res) => {
         db.Workout.create({ day: Date.now })
         .then(dbWorkout => {
             console.log(dbWorkout);
@@ -49,8 +49,8 @@ app.get("/stats", (req, res) => {
         });
     });
     //update existing collection in workoutdb (add an exercise)
-    app.put("/api/exercise", ({body}, res) => {
-        db.Exercise.create(body)
+    app.put("/api/workouts/:id", ({body}, res) => {
+        db.Workout.create(body)
         //create exercise based on body object
         .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
         //insert into exercise schema
@@ -62,7 +62,7 @@ app.get("/stats", (req, res) => {
         })
     });
     //populate the db
-    app.get("/api/exercise", (req, res) => {
+    app.get("/api/workouts", (req, res) => {
         db.Workout.find({})
         .populate("exercises")
         .then(dbWorkout => {
@@ -74,12 +74,17 @@ app.get("/stats", (req, res) => {
     });
 
 //Update Old Workout   
-    app.post("/api/exercise?", ({ body }, res) => {
-        //needs to add all saved exercises into a new workout
-    });
-    //should probably open a request with an existing db
-    //transactions/update on that
-    //indexedDB
+    
+    app.route('/exercise')
+        .get(function (req, res) {
+        res.send('Get a random book')
+        })
+        .post(function (req, res) {
+        res.send('Add a book')
+        })
+        .put(function (req, res) {
+        res.send('Update the book')
+        })
 
 //Dashboard
     app.get("/api/stats", (req, res) => {

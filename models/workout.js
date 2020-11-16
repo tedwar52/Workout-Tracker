@@ -19,9 +19,9 @@ const WorkoutSchema = new Schema({
     ]
 });
 
-WorkoutSchema.methods.newWorkout = function() {
+//WorkoutSchema.methods.newWorkout = function() {
     //create a new collection
-}
+//}
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
