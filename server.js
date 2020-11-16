@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const path = require("path");
 
 const db = require("./models");
 //imports models
@@ -17,10 +18,24 @@ app.use(express.static("public")); /*might change "public"*/
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populate", { useNewUrlParser: true});
 
-//--------------Routes----------------------------------
+//--------------ROUTES----------------------------------
 
+//-----html routes-----------
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+
+app.get("/exercise", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/exercise.html"));
+});
+
+app.get("/stats", (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/stats.html"));
+});
+
+//-----api routes------------
 /* "new workout" */
-app.post("/exercise", ({body}, res) => {
+app.post("/api/exercise", ({body}, res) => {
     db.Exercise.create(body)
     .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: { exercise: _id } }, { new: true}))
     .then(dbWorkout => {
