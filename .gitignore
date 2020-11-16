@@ -1,3 +1,4 @@
 node_modules
 mapping.md
 routes
+/models/exercise.js
