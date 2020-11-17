@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
-module.exports = function(app) {
+module.exports = function (app) {
     //New Workout
     //create new collection in workout db
     app.post("/api/workouts", ({body}, res) => {

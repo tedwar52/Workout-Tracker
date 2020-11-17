@@ -1,11 +1,11 @@
 //-----------imports---------------------------------
 const mongoose = require("mongoose");
 const db = require("../models");
-const {workoutSeed} = require("../seeders/seed");
+const {workoutSeed} = require("./workoutseed");
 
 //-----------mongoose connection---------------------
 
-mongoose.connect(process.env.ATLAS_URI || "mongodb://localhost/workout", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

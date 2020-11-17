@@ -5,12 +5,13 @@ const Schema = mongoose.Schema;
 //type, name, duration, weight, reps, sets
 const exerciseSchema = new Schema(
         {
-        type: String,
-        name: String,
-        duration: Number,
-        weight: Number,
-        reps: Number,
-        sets: Number
+        type: { type: String, required: false },
+        name: { type: String, required: false },
+        distance: { type: Number, required: false },
+        duration: { type: Number, required: false },
+        weight: { type: Number, required: false },
+        reps: { type: Number, required: false },
+        sets: { type: Number, required: false },
         }
 );
 
