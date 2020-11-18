@@ -1,2 +1,4 @@
 node_modules
-mapping.md
+/xserver
+/routes/updatetrans.js
+/models/exercise.js

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+mongoose.connect(process.env.ATLAS_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useFindAndModify: false
 });
@@ -124,14 +124,14 @@ const workoutSeed = [
   }
 ];
 
-db.Workout.create(workoutSeed)
+/* db.Workout.create(workoutSeed)
   .then(dbWorkout => {
     console.log(dbWorkout);
   })
   .catch(({ message }) => {
     console.log(message);
   });
-  
+  */
 db.Workout.deleteMany({})
   .then(() => db.Workout.collection.insertMany(workoutSeed))
   .then(data => {

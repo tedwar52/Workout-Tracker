@@ -19,9 +19,24 @@ const seeder = () => {
             .then((result) => {
                 console.log(`${result.deletedCount} exercises deleted!`)
             })
+            .then(() => db.Workout.collection.insertMany({}))
+            .then(data => {
+                console.log((`${data.result.n} exercises inserted!`));
+                resolve(data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    });
+}
+
+//for when we want to continue...
+const seedCont = () => {
+    return new Promise((resolve, reject) => {
+        db.Workout.create({})
             .then(() => db.Workout.collection.insertMany(workoutSeed))
             .then(data => {
-                console.log(g(`${data.result.n} exercises inserted!`));
+                console.log((`${data.result.n} exercises inserted!`));
                 resolve(data)
             })
             .catch(err => {
@@ -30,4 +45,7 @@ const seeder = () => {
     })
 }
 
+
+
 module.exports = { seeder }
+module.exports = { seedCont }

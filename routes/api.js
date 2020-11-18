@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const db = require("../models");
 
 module.exports = function (app) {
     //New Workout
@@ -13,9 +14,10 @@ module.exports = function (app) {
         .catch(err => {
             res.json(err)
         });
+        
     });
     //update existing collection in workoutdb (add an exercise)
-    app.put("/api/workouts/:id", ({body}, res) => {
+    app.post("/api/workouts/:id", ({body}, res) => {
         db.Workout.create(body)
         //create exercise based on body object
         .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
