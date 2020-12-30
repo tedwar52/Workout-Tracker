@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const morgan = require("morgan");
+const logger = require("morgan");
 const path = require("path");
 //const { Exercise, Workout } = require("./models");
 const router = require("express").Router();
@@ -10,7 +10,7 @@ const db = require("./models");
 //imports models
 
 const app = express();
-//app.use(logger("dev"));
+app.use(logger("dev"));
 
 const PORT = process.env.PORT || 8080;
 
@@ -19,7 +19,7 @@ app.use(express.json());
 
 app.use(express.static("public")); /*might change "public"*/
 
-mongoose.connect(process.env.ATLAS_URI || "mongodb://localhost/workout", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -37,9 +37,10 @@ require("./routes/html")(app);
 //const newWrk = express.Router();
 //require("./routes/new")(newWrk);
 
+
 app.post("/api/workouts", ({ body }, res) => {
   db.Workout.create(body)
-    .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { exercises: _id } }, { new: true }))
+    .then(({ _id }) => db.Workout.findOneAndUpdate({}, { $push: { exercises: _id } }, { new: true }))
     .then((dbWorkout) => {
       console.log(dbWorkout);
     })
@@ -48,8 +49,9 @@ app.post("/api/workouts", ({ body }, res) => {
     });
 });
 
+
 //update existing collection in workoutdb (add an exercise)
-app.put("/api/workouts/:id", (req, res) => {
+app.post("/api/workouts/:id", (req, res) => {
   db.Workout.update(req)
     //create exercise based on body object
     .then(() =>
@@ -67,6 +69,8 @@ app.put("/api/workouts/:id", (req, res) => {
       res.json(err);
     });
 });
+
+
 //populate the db
 /*
 app.get("/api/workouts", (req, res) => {
@@ -129,9 +133,10 @@ app.get("/api/exercise", (req, res) => {
         .put(function (req, res) {
         res.send('Update the book')
         })
+*/
 
-//Dashboard
-    app.get("/api/stats", (req, res) => {
+    //Dashboard
+    app.get("/api/workouts/range", (req, res) => {
         db.Workout.find({})
             .populate("exercises")
             .then(dbWorkout => {
@@ -141,7 +146,7 @@ app.get("/api/exercise", (req, res) => {
                 res.json(err);
             });
     });
-*/
+
 
 //--------------Listener--------------------------------
 
