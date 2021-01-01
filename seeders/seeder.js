@@ -5,7 +5,7 @@ const {workoutSeed} = require("./workoutseed");
 
 //-----------mongoose connection---------------------
 
-mongoose.connect(process.env.ATLAS_URI || "mongodb://localhost/workout", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
