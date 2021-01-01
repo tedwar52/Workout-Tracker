@@ -37,6 +37,39 @@ require("./routes/html")(app);
 //const newWrk = express.Router();
 //require("./routes/new")(newWrk);
 
+/*
+app.post("/api/workouts", ({ body }, res) => {
+  db.Workout.create(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+app.post("/api/workouts", ({ body }, res) => {
+  db.Workout.insertMany(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+app.get("/api/workouts", (req, res) => {
+  db.Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+*/
+
+//======Original===============
 
 app.post("/api/workouts", ({ body }, res) => {
   db.Workout.create(body)
@@ -51,7 +84,7 @@ app.post("/api/workouts", ({ body }, res) => {
 
 
 //update existing collection in workoutdb (add an exercise)
-app.post("/api/workouts/:id", (req, res) => {
+app.put("/api/workouts/:id", (req, res) => {
   db.Workout.update(req)
     //create exercise based on body object
     .then(() =>
@@ -69,6 +102,7 @@ app.post("/api/workouts/:id", (req, res) => {
       res.json(err);
     });
 });
+
 
 
 //populate the db
@@ -135,6 +169,7 @@ app.get("/api/exercise", (req, res) => {
         })
 */
 
+/*
     //Dashboard
     app.get("/api/workouts/range", (req, res) => {
         db.Workout.find({})
@@ -146,7 +181,7 @@ app.get("/api/exercise", (req, res) => {
                 res.json(err);
             });
     });
-
+*/
 
 //--------------Listener--------------------------------
 
