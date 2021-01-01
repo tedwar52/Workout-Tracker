@@ -28,4 +28,4 @@ Here's an example of how to enter in a new workout
 <a name="More">**_See more about this_**</a>
 
 [Github link](www.github.com/tedwar52/Workout-Tracker)  
-[Heroku Deployment](tedwar52@gmail.com)
+[Heroku Deployment](https://still-sands-66951.herokuapp.com/?id=5fefaced62f17a0017c87d4a)
