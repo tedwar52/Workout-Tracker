@@ -28,18 +28,16 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 //const server = require("./middle.js");
 //--------------ROUTES---------------------------------
 
+
+//-----html routes-------------------------------------
 require("./routes/html")(app);
-//-----html routes-----------
 
-//-----api routes------------
-//require("./routes/api")(app);
-//^^this does not pull in routes correctly!! I lose functionality
-//const newWrk = express.Router();
-//require("./routes/new")(newWrk);
 
+//-----api routes--------------------------------------
+
+//Retrieve & Populate the database
 app.get("/api/workouts", (req, res) => {
   db.Workout.find({})
-    .populate("workouts")
     .then((dbWorkout) => {
       res.json(dbWorkout);
     })
@@ -48,8 +46,9 @@ app.get("/api/workouts", (req, res) => {
     });
 });
 
-app.post("/api/workouts", (req, res) => {
-  db.Workout.create({})
+//Create new entry in workout database
+app.post("/api/workouts", ( {body}, res) => {
+  db.Workout.create({body})
   .then(dbWorkout => {
       console.log(dbWorkout);
   })
@@ -58,76 +57,35 @@ app.post("/api/workouts", (req, res) => {
   });
 });
 
-/*
-app.post("/api/workouts", ({ body }, res) => {
-  db.Workout.create(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
+app.put("/api/workouts", (req, res) => {
+  console.log(req.body);
+  db.Workout.insertMany(req.body, (error, data) => {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send(data);
+    }
+  });
 });
 
-app.post("/api/workouts", ({ body }, res) => {
-  db.Workout.insertMany(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-app.get("/api/workouts", (req, res) => {
-  db.Workout.find({})
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-*/
-
-//======Original===============
-
-/*
-app.post("/api/workouts", ({ body }, res) => {
-  db.Workout.create(body)
-    .then(({ _id }) => db.Workout.findOneAndUpdate({}, { $push: { exercises: _id } }, { new: true }))
-    .then((dbWorkout) => {
-      console.log(dbWorkout);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-*/
-
-//update existing collection in workoutdb (add an exercise)
+//Update & Add a workout
 app.put("/api/workouts/:id", (req, res) => {
-  db.Workout.update(req)
-    //create exercise based on body object
-    .then(() =>
-      db.Workout.findOneAndUpdate(
-        { _id: req.params.id },
-        { $push: { exercises: req.body } },
-        { new: true }
-      )
-    )
-    //insert into exercise schema
-    .then((dbWorkout) => {
-      res.json(dbWorkout);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
+  db.Workout.updateOne(
+    { _id: req.params.id },
+    { $push: { exercise: req.body } },
+    { new: true }
+  )
+  .then((dbWorkout) => {
+    res.json(dbWorkout);
+  })
+  .catch((err) => {
+    res.json(err);
+  })
+})
 
+//Dashboard to display all data from workout database
 app.get("/api/workouts/range", (req, res) => {
   db.Workout.find({})
-      .populate("exercises")
       .then(dbWorkout => {
           res.json(dbWorkout);
       })
@@ -136,83 +94,7 @@ app.get("/api/workouts/range", (req, res) => {
       });
     });
 
-//populate the db
-/*
-app.get("/api/workouts", (req, res) => {
-  db.Workout.find({})
-    .populate("workouts")
-    .then((dbWorkout) => {
-      res.json(dbWorkout);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
-*/
 
-/*
-app.post("/api/exercise", ({body}, res) => {
-    db.Workout.create()
-    .then(dbWorkout => {
-        console.log(dbWorkout);
-    })
-    .catch(err => {
-        res.json(err)
-    });
-});
-//update existing collection in workoutdb (add an exercise)
-app.put("/api/exercise/:id", ({body}, res) => {
-    db.Workout.create(body)
-    //create exercise based on body object
-    .then(({_id}) => db.Workout.findOneAndUpdate({}, { $push: {exercises: _id } }, { new: true }))
-    //insert into exercise schema
-    .then(dbWorkout => {
-        res.json(dbWorkout);
-    })
-    .catch(err => {
-        res.json(err);
-    })
-});
-//populate the db
-app.get("/api/exercise", (req, res) => {
-    db.Workout.find({})
-    .populate("exercises")
-    .then(dbWorkout => {
-        res.json(dbWorkout);
-    })
-    .catch(err => {
-        res.json(err);
-    });
-});
-*/
-
-/* Update Old Workout   
-    
-    app.route('/exercise')
-        .get(function (req, res) {
-        res.send('Get a random book')
-        })
-        .post(function (req, res) {
-        res.send('Add a book')
-        })
-        .put(function (req, res) {
-        res.send('Update the book')
-        })
-*/
-
-/*
-    //Dashboard
-    app.get("/api/workouts/range", (req, res) => {
-        db.Workout.find({})
-            .populate("exercises")
-            .then(dbWorkout => {
-                res.json(dbWorkout);
-            })
-            .catch(err => {
-                res.json(err);
-            });
-    });
-*/
 
 //--------------Listener--------------------------------
 
